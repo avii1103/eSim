@@ -1,6 +1,8 @@
 # FOSSEE Screening Task 4: 
 eSim 2.5 Installation & Dependency Fixes on Ubuntu 25.04
 
+**TOTAL ISSUES RESOLVED**: 5
+
 **Name**: Avichal Das
 
 **Email**: avichal1108@gmail.com
@@ -20,9 +22,8 @@ This error blocks eSim installation on Ubuntu 25.04 and higher systems
 Detected Ubuntu Version:
 Unsupported Ubuntu version: 25.04 ()
 ```
-(images werent displaying in the markdown here ill attach a pdf sorry :P)
-![[Error 01.png]]
-/home/avi/Documents/Obsidian/Obsidian-notes/Programming/000 Index/Attachments/Error 01.png
+
+![Error 01](<./Error 01.png>)
 
 ## Cause for the error
 - `case $VERSION_ID` lacked a 25.04 version target
@@ -47,7 +48,7 @@ ___
 - [x] Solved
 ___
 ## Error output:
-![[error 02.png]]
+![Error 02](<./error 02.png>)
 
 ## Cause for the error:
 The install script attempts to add `ppa:kicad/kicad-6.0-releases` repository, which returns `404 Not Found`.
@@ -77,7 +78,7 @@ ___
 - [x] Solved
 ___
 ## Error Output:
-![[Error 03.png]]
+![Error 03](<./Error 03.png>)
 
 ## Cause for the error:
 `nghdl/install-nghdl.sh` uses the exact same dispatcher structure as `install-eSim.sh`—it checks `VERSION_ID` against `22.04`, `23.04`, and `24.04`, uses the same three-digit `FULL_VERSION` regex, and aborts with `Unsupported Ubuntu version: 25.04 ()`
@@ -88,7 +89,7 @@ Instead, we will try to patch `install-eSim-25.04` to run a command before insta
 ### Process:
 1. Using `grep -n -C 15 "install-nghdl.sh --install" install-eSim-scripts/install-eSim-25.04.sh` we have found the lines after which the zip is extracted and directory is changed and before the chmod +x operation on the install script of nghdl:
 
-![[grep output.png]]
+![Output of grep](<./grep output.png>)
 2. Added the following code after the cd command and before the chmod command:
 ```bash
 # Patch unpacked nghdl installer for Ubuntu 25.04 compatibility
@@ -105,7 +106,7 @@ ___
 - [x] Solved
 ___
 ## Error output:
-![[ERROR-04.png]]
+![Error-04](ERROR-04.png)
 
 ## Cause for the error:
 Ubuntu 25.04 removed the legacy GTK 2 package `libcanberra-gtk-module` from its repositories and replaced it with the GTK 3 equivalent, `libcanberra-gtk3-module`.
@@ -118,7 +119,7 @@ We need to add a patch block so `libcanberra-gtk-module` is updated automaticall
 grep -rn -C 3 "libcanberra" nghdl/install-nghdl-scripts/install-nghdl-25.04.sh
 apt-cache policy libcanberra-gtk3-module
 ```
-Output:![[libcanberra output.png]]
+Output:![Locating the required codeblock](<./libcanberra output.png>)
 
 2. Add the following patch after the sed patches added for nghdl: `sed -i 's|"24.04")|"25.04") SCRIPT="$SCRIPT_DIR/install-nghdl-25.04.sh" ;;\n "24.04")|g' install-nghdl.sh`. This Stripped `libcanberra-gtk-module` via `sed` in `install-eSim-25.04.sh` immediately after unpacking `nghdl.zip`.
 ___
@@ -126,7 +127,7 @@ ___
 - [x] Solved
 ___
 ## Error output:
-![[error-05.png]]
+![Error 05](<./error-05.png>)
 
 ## Cause for the error:
 Script fails with `Unhandled version llvm 20.1.2`. Ubuntu 25.04 defaults `/usr/bin/llvm-config` to LLVM 20.1.2, whereas the bundled GHDL 4.1.0 release only supports up to LLVM 18.
@@ -145,7 +146,7 @@ sed -i 's|--with-llvm-config=/usr/bin/llvm-config|--with-llvm-config=/usr/bin/ll
 ___
 # Success
 eSim successfully finished installing:
-![[completion.png]]
+![Installation completed](completion.png)
 
 The eSim GUI launched successfully and running on Ubuntu 25.04:
-![[success.png]]
+![GUI launched successfully](success.png)
