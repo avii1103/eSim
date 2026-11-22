@@ -17,6 +17,7 @@ Detected Ubuntu Version:
 Unsupported Ubuntu version: 25.04 ()
 ```
 ![[Error 01.png]]
+/home/avi/Documents/Obsidian/Obsidian-notes/Programming/000 Index/Attachments/Error 01.png
 
 ## Cause for the error
 - `case $VERSION_ID` lacked a 25.04 version target
