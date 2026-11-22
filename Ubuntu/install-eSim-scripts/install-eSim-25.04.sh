@@ -65,6 +65,13 @@ function installNghdl
     echo "Installing NGHDL..........................."
     unzip -o nghdl.zip
     cd nghdl/
+    # Patch unpacked nghdl installer for Ubuntu 25.04 compatibility
+    cp -f install-nghdl-scripts/install-nghdl-24.04.sh install-nghdl-scripts/install-nghdl-25.04.sh
+    sed -i 's/\\d+\\.\\d+\\.\\d+/\\d+\\.\\d+(\\.\\d+)?/g' install-nghdl.sh
+    sed -i 's|"24.04")|"25.04") SCRIPT="$SCRIPT_DIR/install-nghdl-25.04.sh" ;;\n        "24.04")|g' install-nghdl.sh
+    sed -i 's/libcanberra-gtk-module //g' install-nghdl-scripts/install-nghdl-25.04.sh
+    sudo apt install -y llvm-18
+    sed -i 's|--with-llvm-config=/usr/bin/llvm-config|--with-llvm-config=/usr/bin/llvm-config-18|g' install-nghdl-scripts/install-nghdl-25.04.sh
     chmod +x install-nghdl.sh
 
     # Do not trap on error of any command. Let NGHDL script handle its own errors.
@@ -112,8 +119,8 @@ function installKicad
     ubuntu_version=$(lsb_release -rs)
 
     # Define KiCad PPAs based on Ubuntu version
-    if [[ "$ubuntu_version" == "24.04" || "$ubuntu_version" == "25.04" ]]; then
-        echo "Ubuntu $ubuntu_version detected."
+    if [[ "$ubuntu_version" == "24.04" ]]; then
+        echo "Ubuntu 24.04 detected."
         kicadppa="kicad/kicad-8.0-releases"
 
         # Check if KiCad is installed using dpkg-query for the main package
@@ -142,16 +149,16 @@ function installKicad
     fi
 
     # Check if the PPA is already added
-    if ! grep -q "^deb .*${kicadppa}" /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null; then
-        echo "Adding KiCad PPA to local apt repository: $kicadppa"
-        sudo add-apt-repository -y "ppa:$kicadppa"
-        sudo apt-get update
-    else
-        echo "KiCad PPA is already present in sources."
-    fi
+    #if ! grep -q "^deb .*${kicadppa}" /etc/apt/sources.list /etc/apt/sources.list.d/* 2>/dev/null; then
+    #    echo "Adding KiCad PPA to local apt repository: $kicadppa"
+    #   sudo add-apt-repository -y "ppa:$kicadppa"
+    #   sudo apt-get update
+    #else
+    #    echo "KiCad PPA is already present in sources."
+    #fi
 
     # Install KiCad packages
-    sudo apt-get install -y --no-install-recommends kicad=8.0.8+dfsg-1 kicad-footprints kicad-libraries kicad-symbols kicad-templates
+    sudo apt-get install -y --no-install-recommends kicad kicad-footprints kicad-libraries kicad-symbols kicad-templates
 
     echo "KiCad installation completed successfully!"
 }
