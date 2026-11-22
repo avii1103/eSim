@@ -121,7 +121,7 @@ apt-cache policy libcanberra-gtk3-module
 ```
 Output:![Locating the required codeblock](<./libcanberra output.png>)
 
-2. Add the following patch after the sed patches added for nghdl: `sed -i 's|"24.04")|"25.04") SCRIPT="$SCRIPT_DIR/install-nghdl-25.04.sh" ;;\n "24.04")|g' install-nghdl.sh`. This Stripped `libcanberra-gtk-module` via `sed` in `install-eSim-25.04.sh` immediately after unpacking `nghdl.zip`.
+2. Add the following patch after the sed patches added for nghdl: `sed -i 's/libcanberra-gtk-module //g' install-nghdl-scripts/install-nghdl-25.04.sh`. This Stripped `libcanberra-gtk-module` via `sed` in `install-eSim-25.04.sh` immediately after unpacking `nghdl.zip`.
 ___
 # BUG-05
 - [x] Solved
