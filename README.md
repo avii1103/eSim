@@ -2,10 +2,14 @@
 eSim 2.5 Installation & Dependency Fixes on Ubuntu 25.04
 
 **Name**: Avichal Das
+
 **Email**: avichal1108@gmail.com
+
 **College & Course**: Maharaja Surajmal Institute of Technology, New Delhi (B.Tech CSE 2nd year)
+
 **OS**: Ubuntu 25.04 (Virtual machine)
-**Github repo link**: 
+
+**Github repo link**: https://github.com/avii1103/eSim
 ___
 # BUG-01
 - [x] Solved
@@ -16,6 +20,7 @@ This error blocks eSim installation on Ubuntu 25.04 and higher systems
 Detected Ubuntu Version:
 Unsupported Ubuntu version: 25.04 ()
 ```
+(images werent displaying in the markdown here ill attach a pdf sorry :P)
 ![[Error 01.png]]
 /home/avi/Documents/Obsidian/Obsidian-notes/Programming/000 Index/Attachments/Error 01.png
 
